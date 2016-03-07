@@ -30,7 +30,6 @@ angular.module('starter', ['ionic'])
     $scope.x = 41.683582;
     $scope.y = -0.888826;
     $scope.common();
-    $scope.cargarMapa($scope.x,$scope.y);
   };
 
   /**
@@ -40,7 +39,6 @@ angular.module('starter', ['ionic'])
     $scope.x = 41.683561;
     $scope.y = -0.887341;
     $scope.common();
-    $scope.cargarMapa($scope.x,$scope.y);
   };
 
   /**
@@ -50,7 +48,6 @@ angular.module('starter', ['ionic'])
     $scope.x = 41.683622;
     $scope.y = -0.883977;
     $scope.common();
-    $scope.cargarMapa($scope.x,$scope.y);
   };
 
   /**
@@ -59,6 +56,7 @@ angular.module('starter', ['ionic'])
   $scope.common = function () {
     $scope.mostrarBotones = false;
     $log.log($scope.x + " " + $scope.y);
+    $scope.cargarMapa($scope.x,$scope.y);
   };
 
   $scope.cargarMapa = function (x,y){
