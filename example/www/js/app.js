@@ -66,9 +66,22 @@ angular.module('starter', ['ionic'])
     var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
     var osm = new L.TileLayer(osmUrl, {minZoom: 17, maxZoom: 22, attribution: osmAttrib});
+
+    //DE EJEMPLO, TODO: HACERLO BIEN
+    //Cargamos la capa proyecto:planta_calle_ada_test del WMS http://192.168.56.101:8080/geoserver/wms
+    var ada1 = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
+    layers: 'proyecto:planta_calle_ada_test',
+    format: 'image/png',
+    transparent: true,
+    opacity: 0.5,
+    minZoom:17,
+    maxZoom:22
+    });
+
     //Inicializamos el mapa segun las coordenadas pulsadas
     map.setView(new L.LatLng(x, y),18);
     map.addLayer(osm);
+    map.addLayer(ada1);
   };
 }])
 
