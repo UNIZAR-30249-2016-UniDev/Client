@@ -17,3 +17,49 @@
 .margin-right {
   margin-right: 5px!important;
 }
+
+/*Floating Button*/
+.float-button {
+opacity: 1;
+/*border-radius:15% 0 0 0;*/
+width: 30px;
+padding: 25px;
+font-size: 40px;
+position: fixed;
+bottom: 5%; /* Adjust height */
+right: 5%; /* Adjust position */
+z-index: 1000;
+}
+.float-button .height_fix {
+  margin-top: 100%;
+}
+.float-button .content {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  margin-top: -20px;
+}
+.button-float{
+  background: $assertive !important;
+  z-index: 12 !important;
+  position: absolute !important;
+  bottom: 10px !important;
+  right: 10px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26) !important;
+  -webkit-transform: translate3d(0, 0, 0) !important;
+  transform: translate3d(0, 0, 0) !important;
+  -webkit-transition: 0.2s linear !important;
+  transition: 0.2s linear !important;
+  -webkit-transition-property: -webkit-transform, all !important;
+  transition-property: transform, all !important;
+}
+.button-float:hover{
+  -webkit-transform: translate3d(0, -1px, 0)  !important;
+  transform: translate3d(0, -1px, 0) !important;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4) !important;
+  background: darken($assertive, 10%) !important;
+}

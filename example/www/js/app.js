@@ -57,6 +57,7 @@ angular.module('starter', ['ionic'])
     $scope.mostrarBotones = false;
     $log.log($scope.x + " " + $scope.y);
     $scope.cargarMapa($scope.x,$scope.y);
+    $scope.mostrarFab = true;
   };
 
   $scope.cargarMapa = function (x,y){
@@ -83,7 +84,47 @@ angular.module('starter', ['ionic'])
     map.addLayer(osm);
     map.addLayer(ada1);
   };
+
+  // An alert dialog
+   $scope.showAlert = function() {
+     var alertPopup = $ionicPopup.alert({
+       title: 'Don\'t eat that!',
+       template: 'It might taste good'
+     });
+
+     alertPopup.then(function(res) {
+       console.log('Thank you for not eating my delicious ice cream cone');
+     });
+   };
+
 }])
+
+/**
+  *   Controlador del FAB
+  */
+.controller('FabCtrl', function($scope, $ionicActionSheet) {
+
+  $scope.showActionsheet = function() {
+    $ionicActionSheet.show({
+      titleText: 'Seleccione Piso:',
+      buttons: [
+        { text: '<i class="icon ion-map"></i> Piso 1' },
+        { text: '<i class="icon ion-map"></i> Piso 2' },
+        { text: '<i class="icon ion-map"></i> Piso 3' },
+      ],
+      cancelText: 'Cancelar',
+      cancel: function() {
+        console.log('CANCELLED');
+      },
+      buttonClicked: function(index) {
+        console.log('BUTTON CLICKED', index);
+        return true;
+      }
+    });
+  };
+
+
+})
 
 .controller('MenuAccionesCtrl', function($scope, $ionicModal) {
   $ionicModal.fromTemplateUrl('templates/menuAcciones.html', {
