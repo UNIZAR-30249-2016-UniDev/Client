@@ -44,18 +44,19 @@
     </button>
   </ion-header-bar>
 
-  <!-- FAB Button -->
-  <div class="float-button" ng-controller="FabCtrl" ng-click="showActionsheet()">
-    <span class="height-fix">
-      <a class="content">
-        <button class="button button-dark button-float">
-          <i class="icon ion-ios-photos-outline"></i>
-        </button>
-      </a>
-    </span>
-  </div>
-
   <ion-content data-tap-disabled="true" ng-controller="ButtonsCtrl">
+
+    <!-- FAB Button -->
+    <div class="float-button" ng-hide="mostrarBotones" ng-controller="FabCtrl" ng-click="showActionsheet()">
+      <span class="height-fix">
+        <a class="content">
+          <button class="button button-dark button-float">
+            <i class="icon ion-ios-photos-outline"></i>
+          </button>
+        </a>
+      </span>
+    </div>
+
     <!-- esta div contiene los tres botones de la primera pantalla -->
     <div ng-include="'templates/buttons.html'" ng-show="mostrarBotones">
     </div>
