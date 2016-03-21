@@ -2,10 +2,11 @@
   <!-- Modal header bar -->
   <ion-header-bar class="bar-secondary">
     <h1 class="title">Selecciona Capas</h1>
-    <button class="button button-clear button-positive" ng-click="closeModal()">Aceptar</button>
+    <!--TODO: CARGARLAYERS() NO FUNCIONA, da error en map.addLayer-->
+    <button class="button button-clear button-positive" ng-controller="ButtonsCtrl" ng-click="closeModal();cargarLayers();">Aceptar</button>
   </ion-header-bar>
   <!-- Modal content area -->
   <ion-content>
-    <ion-checkbox ng-model="isChecked">Laboratorios</ion-checkbox>
+    <ion-checkbox ng-repeat="layer in layers" ng-model="layer.enabled" ng-checked="layer.enabled">{{layer.text}}</ion-checkbox>
   </ion-content>
 </div>
