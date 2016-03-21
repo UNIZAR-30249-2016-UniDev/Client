@@ -1,113 +1,70 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title>SmartCampus</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <title></title>
 
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+  <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
 
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
-    <link href="css/ionic.app.css" rel="stylesheet">
-    -->
+  <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+  <link href="css/ionic.app.css" rel="stylesheet">
+  -->
 
-    <!-- ionic/angularjs js -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
+  <!-- ionic/angularjs js -->
+  <script src="lib/ionic/js/ionic.bundle.js"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es&sensor=true"></script>
+  <!-- cordova script (this will be a 404 during development) -->
+  <script src="cordova.js"></script>
 
-    <!-- cordova script (this will be a 404 during development) -->
-    <script src="cordova.js"></script>
+  <!-- your app's js -->
+  <script src="js/app.js"></script>
 
-    <!-- your app's js -->
-    <script src="js/app.js"></script>
-    <script src="js/controllers.js"></script>
-    <script src="js/directives.js"></script>
-  </head>
+  <!--Leaflet-->
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+  <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+  <!--Controladores-->
 
-  <body ng-app="starter" ng-controller="MapCtrl">
+</head>
+<body ng-app="starter">
 
-    <ion-side-menus>
-      <ion-side-menu-content>
+<ion-pane>
 
-        <ion-header-bar class="bar-dark">
-          <button class="button button-icon" ng-click="abrirMenuLayers()">
-            <i class="icon ion-navicon"></i>
+  <ion-header-bar class="bar-dark">
+    <!--Boton a la Izquierda (Capas)-->
+    <button class="button button-icon" ng-controller="MenuCapasCtrl" ng-click="openModal($event)">
+      <i class="icon ion-toggle"></i>
+    </button>
+    <!-- Titulo de la aplicacion (bar-dark lo pone en negro) -->
+    <h1 class="title">Smart Campus</h1>
+    <!--Boton a la derecha (Acciones)-->
+    <button class="button button-icon" ng-controller="MenuAccionesCtrl" ng-click="openModal($event)">
+      <i class="icon ion-clipboard"></i>
+    </button>
+  </ion-header-bar>
+
+  <ion-content data-tap-disabled="true" ng-controller="ButtonsCtrl">
+
+    <!-- FAB Button -->
+    <div class="float-button" ng-hide="mostrarBotones" ng-controller="FabCtrl" ng-click="showActionsheet()">
+      <span class="height-fix">
+        <a class="content">
+          <button class="button button-dark button-float">
+            <i class="icon ion-ios-photos-outline"></i>
           </button>
-          <h1 class="title">SmartCampus</h1>
-          <button class="button button-icon" ng-click="newTask()">
-            <i class="icon ion-compose"></i>
-          </button>
-        </ion-header-bar>
+        </a>
+      </span>
+    </div>
 
-        <!-- Contenido pantalla principal-->
-        <ion-content scroll="false">
-          <map on-create="mapCreated(map)"></map>
-        </ion-content>
+    <!-- esta div contiene los tres botones de la primera pantalla -->
+    <div ng-include="'templates/buttons.html'" ng-show="mostrarBotones">
+    </div>
+    <!--Mapa Leaflet-->
+    <!-- data-tap-disabled="true" para hacer funcionar clicks el mapa-->
+    <div id="map" data-tap-disabled="true"></div>
+  </ion-content>
 
-        <ion-footer-bar class="bar-dark">
-          <a ng-click="centerOnMe()" class="button button-icon icon ion-navigate"></a>
-        </ion-footer-bar>
-
-      </ion-side-menu-content>
-
-                <!--Formulario de boton de Acciones Generales-->
-                <script id="new-task.html" type="text/ng-template">
-                  <div class="modal">
-                    <!-- Modal header bar -->
-                    <ion-header-bar class="bar-secondary">
-                      <h1 class="title">Selecciona Tarea</h1>
-                      <button class="button button-clear button-positive" ng-click="closeNewTask()">Atrás</button>
-                    </ion-header-bar>
-
-                    <!-- Modal content area -->
-                    <ion-content>
-                      <form ng-submit="createTask(task)">
-
-                        <div class="padding">
-                          <button type="submit" class="button button-block button-positive">Apagar Todo</button>
-                        </div>
-                      </form>
-                    </ion-content>
-                  </div>
-                </script>
-
-                <!--Formulario de Capas-->
-                <script id="layers.html" type="text/ng-template">
-                  <div class="modal">
-                    <!-- Modal header bar -->
-                    <ion-header-bar class="bar-secondary">
-                      <h1 class="title">Selecciona Capas</h1>
-                      <button class="button button-clear button-positive" ng-click="cerrarMenuCapas()">Aceptar</button>
-                    </ion-header-bar>
-
-                    <!-- Modal content area -->
-                    <ion-content>
-                      <ion-checkbox ng-model="isChecked">Laboratorios</ion-checkbox>
-                    </ion-content>
-                  </div>
-                </script>
-
-                <!--Formulario de Capas-->
-                <script id="principal-menu.html" type="text/ng-template">
-                  <div class="modal">
-                    <!-- Modal header bar -->
-                    <ion-header-bar class="bar-secondary">
-                      <h1 class="title">Seleccione edificio</h1>
-                    </ion-header-bar>
-
-                    <!-- Modal content area -->
-                    <ion-content>
-                    <button type="submit" class="button button-block button-positive" ng-click="pasarMapaAda()">Ada Byron</button>
-                    <button type="submit" class="button button-block button-positive" ng-click"pasarMapaTorres()">Torres Quevedo</button>
-                    <button type="submit" class="button button-block button-positive" ng-click"pasarMapaBetan()">Betancourt</button>
-
-                    </ion-content>
-                  </div>
-                </script>
-
-            </ion-side-menus>
-
-  </body>
+</ion-pane>
+</body>
 </html>
