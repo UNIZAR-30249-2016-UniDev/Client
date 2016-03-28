@@ -2,25 +2,32 @@
   <!-- Modal header bar -->
   <ion-header-bar class="bar-secondary">
     <h1 class="title">Información</h1>
-    <button class="button button-clear button-positive" ng-click="closeModal()">Atrás</button>
+    <button class="button button-clear button-dark" ng-click="closeModal()">Atrás</button>
   </ion-header-bar>
   <!-- Modal content area -->
   <ion-content>
-      <div class="padding">
+    <div class="padding">
 
-        <div class="item item-button-right">
-          Temperatura
-          <div class="buttons">
-            <button class="button small-button button-positive margin-right" ng-click="lessTemperature()">-</button>
-            {{space.temperature}}
-            <button class="button small-button button-positive margin-left" ng-click="moreTemperature()">+</button>
-          </div>
+      <div class="item item-button-right">
+        Temperatura
+        <div class="buttons">
+          {{space.temperature}}
         </div>
-
-        <ion-toggle toggle-class="toggle-positive" ng-model="space.lights" ng-checked="space.lights">Iluminación</ion-toggle>
-        <ion-toggle toggle-class="toggle-positive" ng-model="space.doors" ng-checked="space.doors">Puertas</ion-toggle>
-        <ion-toggle toggle-class="toggle-positive" ng-model="space.windows" ng-checked="space.windows">Ventanas</ion-toggle>
-        <ion-toggle toggle-class="toggle-positive" ng-model="space.presence" ng-checked="space.presence" ng-disabled = "true">Presencia</ion-toggle>
       </div>
+
+      <div class="item item-button-right">
+        Climatizador
+        <div class="buttons">
+          <button class="button small-button button-dark margin-right" ng-click="lessTemperature()">-</button>
+          {{space.goalTemperature}}
+          <button class="button small-button button-dark margin-left" ng-click="moreTemperature()">+</button>
+        </div>
+      </div>
+
+      <ion-toggle toggle-class="toggle-dark" ng-model="space.lights" ng-checked="space.lights">Iluminación</ion-toggle>
+      <ion-toggle toggle-class="toggle-dark" ng-model="space.doors" ng-checked="space.doors">Puertas</ion-toggle>
+      <ion-toggle toggle-class="toggle-dark" ng-model="space.windows" ng-checked="space.windows">Ventanas</ion-toggle>
+      <ion-toggle toggle-class="toggle-dark" ng-model="space.presence" ng-checked="space.presence" ng-disabled="true">Presencia</ion-toggle>
+    </div>
   </ion-content>
 </div>
