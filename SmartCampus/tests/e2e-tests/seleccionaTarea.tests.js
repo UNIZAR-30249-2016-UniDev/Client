@@ -1,5 +1,5 @@
-describe('El boton de Seleccionar Capas debe...', function(){
-    var numeroCapas = 2;
+describe('El boton de Seleccionar Tarea debe...', function(){
+    var numeroTareas = 1;
 
     // Antes de cada test
     beforeEach(function() {
@@ -7,18 +7,18 @@ describe('El boton de Seleccionar Capas debe...', function(){
         browser.waitForAngular();
     });
 
-    it('mostrar lista de todas las capas disponibles', function() {
+    it('mostrar lista de todas las tareas disponibles', function() {
       element(by.id('ada')).click().then(function() {
-        element(by.id('boton-capas')).click().then(function() {
-          expect(element.all(by.css('.checkbox-dark')).count()).toEqual(numeroCapas);
+        element(by.id('boton-tareas')).click().then(function() {
+          expect(element.all(by.css('.button-block')).count()).toEqual(numeroTareas);
         });
       });
     });
 
     it('ir atras cuando se pulsa el boton atras', function() {
       element(by.id('ada')).click().then(function() {
-        element(by.id('boton-capas')).click().then(function() {
-          element(by.id('botonAtrasCapas')).click().then(function() {
+        element(by.id('boton-tareas')).click().then(function() {
+          element(by.id('botonAtrasTareas')).click().then(function() {
             expect(element(by.id('map')).isPresent()).toBe(true);
             expect(element(by.css('.float-button')).isPresent()).toBe(true);
           });
