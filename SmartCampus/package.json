@@ -3,16 +3,19 @@
   "version": "1.1.1",
   "description": "SmartCampus: An Ionic project",
   "dependencies": {
-    "gulp": "^3.5.6",
-    "gulp-sass": "^2.0.4",
-    "gulp-concat": "^2.2.0",
-    "gulp-minify-css": "^0.3.0",
-    "gulp-rename": "^1.2.0"
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-istanbul": "^0.10.3",
+    "istanbul": "^0.4.2",
+    "protractor": "^3.2.2",
+    "q": "^1.4.1"
   },
   "devDependencies": {
-    "bower": "^1.3.3",
-    "gulp-util": "^2.2.14",
-    "shelljs": "^0.3.0"
+    "bower": "^1.3.3"
+  },
+  "scripts": {
+    "testcover": "gulp backup && gulp instrumet && gulp cleanOriginalJs && gulp replace && protractor tests/e2e-testsCoverage.conf.js && gulp cleanInstrumentedJs && gulp restoreBackup && gulp cleanAll && istanbul report --include 'coverage/integration/json/coverage-final.json' --dir 'coverage/integration'  html",
+    "test": "protractor tests/e2e-tests.conf.js"
   },
   "cordovaPlugins": [
     "cordova-plugin-device",

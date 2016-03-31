@@ -1,11 +1,19 @@
 var q = require('q');
 
-var deferred = q.defer();
+var waitList = [];
+var onComplete;
 
-exports.resolve = function() {
-  deferred.resolve.apply(deferred, arguments);
+exports.waitList = waitList;
+
+exports.setOnComplete = function(cb) {
+  onComplete = cb;
 };
 
-exports.teardown = function() {
-  return deferred.promise;
+exports.teardown = function () {
+  return q.all(waitList)
+      .then(function() {
+        if (onComplete) {
+          return onComplete();
+        }
+      });
 };
