@@ -14,11 +14,23 @@ angular.module('buttons', ['ionic'])
   $scope.x = 0.0;
   $scope.y = 0.0;
 
-  //Variable para guardar el mapa
-
-
-  //Variable para guardar las capas que hay que mostrar
-
+  //Variables para guardar capas
+  var ada1Lab = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
+    layers: 'proyecto:planta_calle_ada_labs',
+    format: 'image/png',
+    transparent: true,
+    opacity: 0.5,
+    minZoom:17,
+    maxZoom:22
+  });
+  var ada1Clases = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
+    layers: 'proyecto:planta_calle_ada_clases',
+    format: 'image/png',
+    transparent: true,
+    opacity: 0.5,
+    minZoom:17,
+    maxZoom:22
+  });
 
   $scope.mostrarBotones = true;  // mostrar = false cuando se seleccione una opcion
   $scope.$log = $log; // variable para acceder al log
@@ -59,6 +71,7 @@ angular.module('buttons', ['ionic'])
     $scope.mostrarBotones = false;
     $log.log($scope.x + " " + $scope.y);
     $scope.cargarMapa($scope.x,$scope.y);
+    $scope.cargarEdificiosBase();
   };
 
   //Metodo que inicializa el mapa con la capa base de openstreetmap y la planta calle del ada
@@ -69,22 +82,10 @@ angular.module('buttons', ['ionic'])
     var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
     var osm = new L.TileLayer(osmUrl, {minZoom: 17, maxZoom: 22, attribution: osmAttrib});
-
-    //DE EJEMPLO, TODO: HACERLO BIEN
-    //Cargamos la capa proyecto:planta_calle_ada_test del WMS http://192.168.56.101:8080/geoserver/wms
-    var ada1 = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
-      layers: 'proyecto:planta_calle_ada_test',
-      format: 'image/png',
-      transparent: true,
-      opacity: 0.5,
-      minZoom:17,
-      maxZoom:22
-    });
-
     //Inicializamos el mapa segun las coordenadas pulsadas
     map.setView(new L.LatLng(x, y),18);
     map.addLayer(osm);
-    map.addLayer(ada1);
+    //Guardamos el mapa de forma global, para acceder a el desde toda la app
     $rootScope.map = map;
   };
 
@@ -92,32 +93,39 @@ angular.module('buttons', ['ionic'])
   $scope.cargarLayers = function (){
 
     console.log($rootScope.layers[0].enabled);
-    console.log($rootScope.layers[1].enabled);
+    console.log($scope.layers[0].id);
+    console.log($rootScope.capasMostradas[0]);
 
     if($scope.layers[0].enabled){
-      //Capa de Labs
-      var ada1Lab = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
-        layers: 'proyecto:planta_calle_ada_labs',
-        format: 'image/png',
-        transparent: true,
-        opacity: 0.5,
-        minZoom:17,
-        maxZoom:22
-      });
       $rootScope.map.addLayer(ada1Lab);
+      $rootScope.capasMostradas[0] = ada1Lab;
+    }
+    else{
+      //Remove layer a partir de id
+      $rootScope.map.removeLayer($rootScope.capasMostradas[0]);
     }
     if($scope.layers[1].enabled){
-      //Capa de Clases
-      var ada1Clases = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
-        layers: 'proyecto:planta_calle_ada_clases',
-        format: 'image/png',
-        transparent: true,
-        opacity: 0.5,
-        minZoom:17,
-        maxZoom:22
-      });
       $rootScope.map.addLayer(ada1Clases);
+      $rootScope.capasMostradas[1] = ada1Clases;
     }
+    else{
+      //Remove layer a partir de id
+      $rootScope.map.removeLayer($rootScope.capasMostradas[1]);
+    }
+  };
+
+  $scope.cargarEdificiosBase = function (){
+    //TODO: Cargar capa base de tq y betan
+    //Cargamos la capa proyecto:planta_calle_ada_test del WMS http://192.168.56.101:8080/geoserver/wms
+    var adaBase = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
+      layers: 'proyecto:planta_calle_ada_test',
+      format: 'image/png',
+      transparent: true,
+      opacity: 0.5,
+      minZoom:17,
+      maxZoom:22
+    });
+    $rootScope.map.addLayer(adaBase);
   };
 
 });

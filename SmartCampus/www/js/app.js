@@ -10,11 +10,16 @@ angular.module('starter', ['ionic', 'buttons', 'menus', 'misc'])
       //RootScope para compartir la informacion de las layers entre el modal y el controller
       $rootScope.layers = [{
         text: 'Laboratorios',
-        enabled: false
+        enabled: false,
+        id : 0
       }, {
         text: 'Clases',
-        enabled: false
+        enabled: false,
+        id : 1
       }];
+
+      //Array para guardar los leafletID de las capas mostradas en el mapa
+      $rootScope.capasMostradas = new Array();
 
       if (window.cordova && window.cordova.plugins.Keyboard) {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
