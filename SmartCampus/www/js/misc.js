@@ -3,7 +3,7 @@ angular.module('misc', ['ionic'])
 /**
  *   Controlador del FAB
  */
-.controller('FabCtrl', function($scope, $ionicActionSheet) {
+.controller('FabCtrl', function($scope, $ionicActionSheet, $rootScope) {
 
   $scope.showActionsheet = function() {
     $ionicActionSheet.show({
@@ -20,7 +20,8 @@ angular.module('misc', ['ionic'])
         console.log('CANCELLED');
       },
       buttonClicked: function(index) {
-        console.log('BUTTON CLICKED', index);
+        $rootScope.pisoActual = index+1;
+        console.log('BUTTON CLICKED', index,  'piso:' , $rootScope.pisoActual);
         return true;
       }
     });

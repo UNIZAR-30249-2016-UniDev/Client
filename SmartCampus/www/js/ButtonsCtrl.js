@@ -10,9 +10,6 @@ angular.module('buttons', ['ionic'])
 * Se requiere $scope y $log
 */
 .controller('ButtonsCtrl', function ($scope, $log, $rootScope) {
-  /* atributos para la latitud y longitud */
-  $scope.x = 0.0;
-  $scope.y = 0.0;
 
   //Variables para guardar capas
   var ada1Lab = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
@@ -35,42 +32,13 @@ angular.module('buttons', ['ionic'])
   $scope.mostrarBotones = true;  // mostrar = false cuando se seleccione una opcion
   $scope.$log = $log; // variable para acceder al log
 
-  /* funciones para ir al ada, al torres quevedo o al betancourt */
-
   /**
-  * Coordenadas para ir al Ada Byron
+  * Metodo inicial
   */
-  $scope.ada = function () {
-    $scope.x = 41.683582;
-    $scope.y = -0.888826;
-    $scope.common();
-  };
-
-  /**
-  * Coordenadas para ir al Torres Quevedo
-  */
-  $scope.tq = function () {
-    $scope.x = 41.683561;
-    $scope.y = -0.887341;
-    $scope.common();
-  };
-
-  /**
-  * Coordenadas para ir al Betancourt
-  */
-  $scope.betan = function () {
-    $scope.x = 41.683622;
-    $scope.y = -0.883977;
-    $scope.common();
-  };
-
-  /**
-  * Agrupacion de operaciones comunes a ada(), tq() y betan()
-  */
-  $scope.common = function () {
+  $scope.init = function (x,y) {
     $scope.mostrarBotones = false;
-    $log.log($scope.x + " " + $scope.y);
-    $scope.cargarMapa($scope.x,$scope.y);
+    $log.log(x + " " + y);
+    $scope.cargarMapa(x,y);
     $scope.cargarEdificiosBase();
   };
 
@@ -81,15 +49,25 @@ angular.module('buttons', ['ionic'])
     //Creamos la capa base de OpenStreetMap
     var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmUrl, {minZoom: 17, maxZoom: 22, attribution: osmAttrib});
-    //Inicializamos el mapa segun las coordenadas pulsadas
+    //Modificamos el mapa para que solo muestre un box determinado
+    var southWest = L.latLng(41.682978, -0.889532),
+    northEast = L.latLng(41.684199, -0.882201),
+    box = L.latLngBounds(southWest, northEast);
+    //Creamos la Capa con los atributos
+    var osm = new L.TileLayer(osmUrl, {minZoom: 17, maxZoom: 22, attribution: osmAttrib, bounds: box });
+    //Movemos la camara a las coordenadas del edificio pasado por parametro
     map.setView(new L.LatLng(x, y),18);
+    //Configuramos el mapa para que no se pueda mover fuera del bound
+    map.on('drag', function() {
+      map.panInsideBounds(box, { animate: false });
+    });
+    //Anadimos el mapa en una layer
     map.addLayer(osm);
     //Guardamos el mapa de forma global, para acceder a el desde toda la app
     $rootScope.map = map;
   };
 
-  //Metodo encargado de mostrar las capas seleccionadas correspondientes
+  //Metodo encargado de mostrar las capas seleccionadas por el usuario
   $scope.cargarLayers = function (){
 
     console.log($rootScope.layers[0].enabled);
@@ -114,6 +92,7 @@ angular.module('buttons', ['ionic'])
     }
   };
 
+  //Carga todos los espacios de los edificios en una capa base
   $scope.cargarEdificiosBase = function (){
     //TODO: Cargar capa base de tq y betan
     //Cargamos la capa proyecto:planta_calle_ada_test del WMS http://192.168.56.101:8080/geoserver/wms
