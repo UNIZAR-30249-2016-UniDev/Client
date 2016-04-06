@@ -11,22 +11,25 @@ angular.module('buttons', ['ionic'])
 */
 .controller('ButtonsCtrl', function ($scope, $log, $rootScope) {
 
+  $scope.minZoom = 18;
+  $scope.maxZoom = 22;
+
   //Variables para guardar capas
   var ada1Lab = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
     layers: 'proyecto:planta_calle_ada_labs',
     format: 'image/png',
     transparent: true,
     opacity: 0.5,
-    minZoom:17,
-    maxZoom:22
+    minZoom:$scope.minZoom ,
+    maxZoom:$scope.maxZoom
   });
   var ada1Clases = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
     layers: 'proyecto:planta_calle_ada_clases',
     format: 'image/png',
     transparent: true,
     opacity: 0.5,
-    minZoom:17,
-    maxZoom:22
+    minZoom:$scope.minZoom ,
+    maxZoom:$scope.maxZoom
   });
 
   $scope.mostrarBotones = true;  // mostrar = false cuando se seleccione una opcion
@@ -54,9 +57,11 @@ angular.module('buttons', ['ionic'])
     northEast = L.latLng(41.684199, -0.882201),
     box = L.latLngBounds(southWest, northEast);
     //Creamos la Capa con los atributos
-    var osm = new L.TileLayer(osmUrl, {minZoom: 17, maxZoom: 22, attribution: osmAttrib, bounds: box });
+    var osm = new L.TileLayer(osmUrl, {minZoom: $scope.minZoom , maxZoom: $scope.maxZoom , attribution: osmAttrib, bounds: box });
+    //Proyeccion EPSG23030
+    osm.options.crs = L.CRS.EPSG23030;
     //Movemos la camara a las coordenadas del edificio pasado por parametro
-    map.setView(new L.LatLng(x, y),18);
+    map.setView(new L.LatLng(x, y),$scope.minZoom );
     //Configuramos el mapa para que no se pueda mover fuera del bound
     map.on('drag', function() {
       map.panInsideBounds(box, { animate: false });
@@ -101,10 +106,10 @@ angular.module('buttons', ['ionic'])
       format: 'image/png',
       transparent: true,
       opacity: 0.5,
-      minZoom:17,
-      maxZoom:22
+      minZoom:$scope.minZoom ,
+      maxZoom:$scope.maxZoom
     });
     $rootScope.map.addLayer(adaBase);
   };
-
+ 
 });
