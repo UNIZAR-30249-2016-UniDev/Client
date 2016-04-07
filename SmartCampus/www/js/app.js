@@ -25,18 +25,6 @@ angular.module('starter', ['ionic', 'buttons', 'menus', 'misc', 'markers'])
         text: 'Despachos',
         enabled: false,
         id : 3
-      },{
-        text: 'Máquinas Cafe',
-        enabled: false,
-        id : 4
-      },{
-        text: 'Cafetería',
-        enabled: false,
-        id : 5
-      },{
-        text: 'Laboratorios',
-        enabled: false,
-        id : 6
       }];
 
       //Array para guardar los leafletID de las capas mostradas en el mapa

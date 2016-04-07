@@ -11,25 +11,27 @@
 
   <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
   <link href="css/ionic.app.css" rel="stylesheet">
-  -->
+-->
 
-  <!-- ionic/angularjs js -->
-  <script src="lib/ionic/js/ionic.bundle.js"></script>
+<!-- ionic/angularjs js -->
+<script src="lib/ionic/js/ionic.bundle.js"></script>
 
-  <!-- cordova script (this will be a 404 during development) -->
-  <script src="cordova.js"></script>
+<!-- cordova script (this will be a 404 during development) -->
+<script src="cordova.js"></script>
 
-  <!-- your app's js -->
-  <script src="js/app.js"></script>
-  <script src="js/ButtonsCtrl.js"></script>
-  <script src="js/menus.js"></script>
-  <script src="js/misc.js"></script>
-  <script src="js/markersCtrl.js"></script>
+<!-- your app's js -->
+<script src="js/app.js"></script>
+<script src="js/ButtonsCtrl.js"></script>
+<script src="js/menus.js"></script>
+<script src="js/misc.js"></script>
+<script src="js/markersCtrl.js"></script>
 
-  <!--Leaflet-->
-  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-  <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-  <!--Controladores-->
+<!--Leaflet-->
+<!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />-->
+<!--<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>-->
+<link rel="stylesheet" href="lib/leaflet/leaflet.css" />
+<script src="lib/leaflet/leaflet.js"></script>
+<!--Controladores-->
 
 </head>
 
@@ -55,12 +57,12 @@
       <!-- FAB Button -->
       <div class="float-button" ng-hide="mostrarBotones" ng-controller="FabCtrl" ng-click="showActionsheet()">
         <span class="height-fix">
-        <a class="content">
-          <button class="button button-dark button-float">
-            <i class="icon ion-ios-photos-outline"></i>
-          </button>
-        </a>
-      </span>
+          <a class="content">
+            <button class="button button-dark button-float">
+              <i class="icon ion-ios-photos-outline"></i>
+            </button>
+          </a>
+        </span>
       </div>
 
       <!-- esta div contiene los tres botones de la primera pantalla -->
