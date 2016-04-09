@@ -30,7 +30,51 @@ angular.module('starter', ['ionic', 'buttons', 'menus', 'misc', 'markers'])
       //Array para guardar los leafletID de las capas mostradas en el mapa
       $rootScope.capasMostradas = new Array();
 
-      $rootScope.pisoActual = 1;
+      $rootScope.pisoActual = 0;
+
+      //Variables para guardar los zooms del mapa y las capas
+      var minZoom = 18;
+      var maxZoom = 22;
+
+      cambiarPiso = function (){
+        $rootScope.capasMostradas = new Array();
+        if ($rootScope.pisoActual === 0){
+          //Variables para guardar capas
+          $rootScope.labs = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
+            layers: 'proyecto:planta_calle_ada_labs',
+            format: 'image/png',
+            transparent: true,
+            opacity: 0.5,
+            minZoom:minZoom ,
+            maxZoom:maxZoom
+          });
+          $rootScope.clases = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
+            layers: 'proyecto:planta_calle_ada_clases',
+            format: 'image/png',
+            transparent: true,
+            opacity: 0.5,
+            minZoom:minZoom ,
+            maxZoom:maxZoom
+          });
+          $rootScope.wc = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
+            layers: 'proyecto:planta_calle_ada_baños',
+            format: 'image/png',
+            transparent: true,
+            opacity: 0.5,
+            minZoom:minZoom ,
+            maxZoom:maxZoom
+          });
+          $rootScope.despachos = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
+            layers: 'proyecto:planta_calle_ada_despachos',
+            format: 'image/png',
+            transparent: true,
+            opacity: 0.5,
+            minZoom:minZoom ,
+            maxZoom:maxZoom
+          });
+        }
+        console.log("Cambiar Piso");
+      };
 
       if (window.cordova && window.cordova.plugins.Keyboard) {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard

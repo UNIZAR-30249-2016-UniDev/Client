@@ -2,35 +2,13 @@
 angular.module('buttons', ['ionic'])
 
 /**
-* Controlador para los botones de la pantalla inicial:
-* Ada Byron, Torres Quevedo, Betancourt.
-*
-* El controlador ajusta las coordenadas (x, y) para cada edificio y oculta los tres botones
-*
-* Se requiere $scope y $log
+* Controlador Principal
 */
 .controller('ButtonsCtrl', function ($scope, $log, $rootScope) {
 
+  //Variables para guardar los zooms del mapa y las capas
   $scope.minZoom = 18;
   $scope.maxZoom = 22;
-
-  //Variables para guardar capas
-  var ada1Lab = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
-    layers: 'proyecto:planta_calle_ada_labs',
-    format: 'image/png',
-    transparent: true,
-    opacity: 0.5,
-    minZoom:$scope.minZoom ,
-    maxZoom:$scope.maxZoom
-  });
-  var ada1Clases = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
-    layers: 'proyecto:planta_calle_ada_clases',
-    format: 'image/png',
-    transparent: true,
-    opacity: 0.5,
-    minZoom:$scope.minZoom ,
-    maxZoom:$scope.maxZoom
-  });
 
   $scope.mostrarBotones = true;  // mostrar = false cuando se seleccione una opcion
   $scope.$log = $log; // variable para acceder al log
@@ -43,6 +21,7 @@ angular.module('buttons', ['ionic'])
     $log.log(x + " " + y);
     $scope.cargarMapa(x,y);
     $scope.cargarEdificiosBase();
+    cambiarPiso();
   };
 
   //Metodo que inicializa el mapa con la capa base de openstreetmap y la planta calle del ada
@@ -74,42 +53,55 @@ angular.module('buttons', ['ionic'])
 
   //Metodo encargado de mostrar las capas seleccionadas por el usuario
   $scope.cargarLayers = function (){
-
-    console.log($rootScope.layers[0].enabled);
-    console.log($scope.layers[0].id);
-    console.log($rootScope.capasMostradas[0]);
-
+    //Si la capa con id 0, esta enabled
     if($scope.layers[0].enabled){
-      $rootScope.map.addLayer(ada1Lab);
-      $rootScope.capasMostradas[0] = ada1Lab;
+      //Agnadimos la capa y guardamos el leafletID en el array
+      $rootScope.map.addLayer($rootScope.labs);
+      $rootScope.capasMostradas[0] = $rootScope.labs;
     }
     else{
       //Remove layer a partir de id
+      if($rootScope.capasMostradas[0])
       $rootScope.map.removeLayer($rootScope.capasMostradas[0]);
     }
     if($scope.layers[1].enabled){
-      $rootScope.map.addLayer(ada1Clases);
-      $rootScope.capasMostradas[1] = ada1Clases;
+      $rootScope.map.addLayer($rootScope.clases);
+      $rootScope.capasMostradas[1] = $rootScope.clases;
     }
     else{
-      //Remove layer a partir de id
+      if($rootScope.capasMostradas[1])
       $rootScope.map.removeLayer($rootScope.capasMostradas[1]);
+    }
+    if($scope.layers[2].enabled){
+      $rootScope.map.addLayer($rootScope.wc);
+      $rootScope.capasMostradas[2] = $rootScope.wc;
+    }
+    else{
+      if($rootScope.capasMostradas[2])
+      $rootScope.map.removeLayer($rootScope.capasMostradas[2]);
+    }
+    if($scope.layers[3].enabled){
+      $rootScope.map.addLayer($rootScope.despachos);
+      $rootScope.capasMostradas[3] = $rootScope.despachos;
+    }
+    else{
+      if($rootScope.capasMostradas[3])
+      $rootScope.map.removeLayer($rootScope.capasMostradas[3]);
     }
   };
 
   //Carga todos los espacios de los edificios en una capa base
   $scope.cargarEdificiosBase = function (){
     //TODO: Cargar capa base de tq y betan
-    //Cargamos la capa proyecto:planta_calle_ada_test del WMS http://192.168.56.101:8080/geoserver/wms
     var adaBase = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
       layers: 'proyecto:planta_calle_ada_test',
       format: 'image/png',
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.2,
       minZoom:$scope.minZoom ,
       maxZoom:$scope.maxZoom
     });
     $rootScope.map.addLayer(adaBase);
   };
- 
+
 });
