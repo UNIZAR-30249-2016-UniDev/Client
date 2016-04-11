@@ -1,0 +1,14 @@
+<div class="modal">
+  <!-- Modal header bar -->
+  <ion-header-bar class="bar-secondary">
+    <h1 class="title">Selecciona Capas</h1>
+
+    <button id="botonAtrasCapas" class="button button-icon" ng-controller="ButtonsCtrl" ng-click="closeModal();cargarLayers();">
+      <i class="icon ion-close-round"></i>
+    </button>
+  </ion-header-bar>
+  <!-- Modal content area -->
+  <ion-content>
+    <ion-checkbox class="checkbox-dark" ng-repeat="layer in layers" ng-model="layer.enabled" ng-checked="layer.enabled">{{layer.text}}</ion-checkbox>
+  </ion-content>
+</div>

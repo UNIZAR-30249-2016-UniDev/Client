@@ -15,7 +15,8 @@
   },
   "scripts": {
     "testcover": "gulp backup && gulp instrumet && gulp cleanOriginalJs && gulp replace && protractor tests/e2e-testsCoverage.conf.js && gulp cleanInstrumentedJs && gulp restoreBackup && gulp cleanAll && istanbul report --include 'coverage/integration/json/coverage-final.json' --dir 'coverage/integration'  html",
-    "test": "protractor tests/e2e-tests.conf.js"
+    "test": "protractor tests/e2e-tests.conf.js",
+    "install": "node ./node_modules/protractor/bin/webdriver-manager update"
   },
   "cordovaPlugins": [
     "cordova-plugin-device",
@@ -25,5 +26,7 @@
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard"
   ],
-  "cordovaPlatforms": []
+  "cordovaPlatforms": [
+    "android"
+  ]
 }
