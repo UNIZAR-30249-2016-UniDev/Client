@@ -44,8 +44,12 @@ angular.module('buttons', ['ionic'])
     map.on('drag', function() {
       map.panInsideBounds(box, { animate: false });
     });
+
     //Anadimos el mapa en una layer
-    map.addLayer(osm);
+    //map.addLayer(osm);                //Este para OpenStreetMap
+    var ggl = new L.Google('ROADMAP');  //Este para Google Maps
+    map.addLayer(ggl);
+
     //Guardamos el mapa de forma global, para acceder a el desde toda la app
     $rootScope.map = map;
   };
