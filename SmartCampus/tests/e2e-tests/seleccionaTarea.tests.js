@@ -1,5 +1,5 @@
 describe('El boton de Seleccionar Tarea debe...', function(){
-    var numeroTareas = 1;
+    var numeroTareas = 2;
 
     // Antes de cada test
     beforeEach(function() {

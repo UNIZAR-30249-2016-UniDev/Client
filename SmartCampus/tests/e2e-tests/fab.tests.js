@@ -1,5 +1,5 @@
 describe('El boton flotante debe...', function(){
-  var numeroPisos = 3;
+  var numeroPisos = 5;
 
   // Antes de cada test
   beforeEach(function() {

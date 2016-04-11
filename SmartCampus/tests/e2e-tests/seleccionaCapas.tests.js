@@ -1,5 +1,5 @@
 describe('El boton de Seleccionar Capas debe...', function(){
-    var numeroCapas = 2;
+    var numeroCapas = 4;
 
     // Antes de cada test
     beforeEach(function() {

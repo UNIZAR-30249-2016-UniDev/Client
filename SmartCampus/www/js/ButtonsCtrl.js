@@ -20,11 +20,10 @@ angular.module('buttons', ['ionic'])
     $scope.mostrarBotones = false;
     $log.log(x + " " + y);
     $scope.cargarMapa(x,y);
-    $scope.cargarEdificiosBase();
     cambiarPiso();
   };
 
-  //Metodo que inicializa el mapa con la capa base de openstreetmap y la planta calle del ada
+  //Metodo que inicializa el mapa con la capa base de openstreetmap
   $scope.cargarMapa = function (x,y){
     /* Atributo para guardar el mapa */
     var map = L.map('map');
@@ -88,20 +87,6 @@ angular.module('buttons', ['ionic'])
       if($rootScope.capasMostradas[3])
       $rootScope.map.removeLayer($rootScope.capasMostradas[3]);
     }
-  };
-
-  //Carga todos los espacios de los edificios en una capa base
-  $scope.cargarEdificiosBase = function (){
-    //TODO: Cargar capa base de tq y betan
-    var adaBase = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
-      layers: 'proyecto:planta_calle_ada_test',
-      format: 'image/png',
-      transparent: true,
-      opacity: 0.2,
-      minZoom:$scope.minZoom ,
-      maxZoom:$scope.maxZoom
-    });
-    $rootScope.map.addLayer(adaBase);
   };
 
 });
