@@ -24,8 +24,8 @@ angular.module('misc', ['ionic'])
         console.log('CANCELLED');
       },
       buttonClicked: function(index) {
-        if (index+1 != $rootScope.pisoActual){
-          $rootScope.pisoActual = index+1;
+        if (index != $rootScope.pisoActual){
+          $rootScope.pisoActual = index;
           cambiarPiso();
           $scope.cargarLayers();
         }

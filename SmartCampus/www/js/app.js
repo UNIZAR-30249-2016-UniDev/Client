@@ -37,43 +37,71 @@ angular.module('starter', ['ionic', 'buttons', 'menus', 'misc', 'markers'])
       var maxZoom = 22;
 
       cambiarPiso = function (){
+        limpiarCapas();
+        mostrarCapaBase();
         $rootScope.capasMostradas = new Array();
-        if ($rootScope.pisoActual === 0){
           //Variables para guardar capas
           $rootScope.labs = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
-            layers: 'proyecto:planta_calle_ada_labs',
+            layers: 'proyecto:planta_'+ $rootScope.pisoActual +'_lab',
             format: 'image/png',
             transparent: true,
-            opacity: 0.5,
+            opacity: 0.7,
             minZoom:minZoom ,
             maxZoom:maxZoom
           });
           $rootScope.clases = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
-            layers: 'proyecto:planta_calle_ada_clases',
+            layers: 'proyecto:planta_'+ $rootScope.pisoActual +'_aula',
             format: 'image/png',
             transparent: true,
-            opacity: 0.5,
+            opacity: 0.7,
             minZoom:minZoom ,
             maxZoom:maxZoom
           });
           $rootScope.wc = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
-            layers: 'proyecto:planta_calle_ada_baños',
+            layers: 'proyecto:planta_'+ $rootScope.pisoActual +'_wc',
             format: 'image/png',
             transparent: true,
-            opacity: 0.5,
+            opacity: 0.7,
             minZoom:minZoom ,
             maxZoom:maxZoom
           });
           $rootScope.despachos = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
-            layers: 'proyecto:planta_calle_ada_despachos',
+            layers: 'proyecto:planta_'+ $rootScope.pisoActual +'_despacho',
             format: 'image/png',
             transparent: true,
-            opacity: 0.5,
+            opacity: 0.7,
             minZoom:minZoom ,
             maxZoom:maxZoom
           });
-        }
         console.log("Cambiar Piso");
+      };
+
+      //Metodo encargado de limpiar todas las capas mostradas en el mapa
+      limpiarCapas = function(){
+        if($rootScope.capasMostradas[0])
+        $rootScope.map.removeLayer($rootScope.capasMostradas[0]);
+        if($rootScope.capasMostradas[1])
+        $rootScope.map.removeLayer($rootScope.capasMostradas[1]);
+        if($rootScope.capasMostradas[2])
+        $rootScope.map.removeLayer($rootScope.capasMostradas[2]);
+        if($rootScope.capasMostradas[3])
+        $rootScope.map.removeLayer($rootScope.capasMostradas[3]);
+        if($rootScope.base)
+        $rootScope.map.removeLayer($rootScope.base);
+      };
+
+      //Método encargado de mostrar la capa base del piso en el que nos encontremos
+      mostrarCapaBase = function (){
+        //proyecto:planta_calle_ada_test
+        $rootScope.base = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
+          layers: 'proyecto:planta_'+ $rootScope.pisoActual +'_base',
+          format: 'image/png',
+          transparent: true,
+          opacity: 0.2,
+          minZoom:minZoom ,
+          maxZoom:maxZoom
+        });
+        $rootScope.map.addLayer($rootScope.base);
       };
 
       if (window.cordova && window.cordova.plugins.Keyboard) {
