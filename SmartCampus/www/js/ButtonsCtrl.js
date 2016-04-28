@@ -4,7 +4,33 @@ angular.module('buttons', ['ionic'])
 /**
 * Controlador Principal
 */
-.controller('ButtonsCtrl', function ($scope, $log, $rootScope) {
+.controller('ButtonsCtrl', function ($scope, $log, $rootScope, $ionicModal) {
+
+  $ionicModal.fromTemplateUrl('templates/menuAccionesEspacio.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+  $scope.openModal = function() {
+    $scope.modal.show();
+  };
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+    updateSpace();
+  };
+  //Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
+  // Execute action on hide modal
+  $scope.$on('modal.hidden', function() {
+    // Execute action
+  });
+  // Execute action on remove modal
+  $scope.$on('modal.removed', function() {
+    // Execute action
+  });
 
   //Variables para guardar los zooms del mapa y las capas
   $scope.minZoom = 18;
@@ -31,7 +57,7 @@ angular.module('buttons', ['ionic'])
     var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
     //Modificamos el mapa para que solo muestre un box determinado
-    var southWest = L.latLng(41.682978, -0.889532),
+    var southWest = L.latLng(41.682978, -0.889932),
     northEast = L.latLng(41.684199, -0.882201),
     box = L.latLngBounds(southWest, northEast);
     //Creamos la Capa con los atributos
@@ -44,53 +70,42 @@ angular.module('buttons', ['ionic'])
     map.on('drag', function() {
       map.panInsideBounds(box, { animate: false });
     });
-
     //Anadimos el mapa en una layer
     //map.addLayer(osm);                //Este para OpenStreetMap
-    var ggl = new L.Google('ROADMAP');  //Este para Google Maps
+    var ggl = new L.Google('ROADMAP', {minZoom: $scope.minZoom , maxZoom: $scope.maxZoom , bounds: box });  //Este para Google Maps
     map.addLayer(ggl);
-
     //Guardamos el mapa de forma global, para acceder a el desde toda la app
     $rootScope.map = map;
   };
 
-  //Metodo encargado de mostrar las capas seleccionadas por el usuario
-  $scope.cargarLayers = function (){
-    //Si la capa con id 0, esta enabled
-    if($scope.layers[0].enabled){
-      //Agnadimos la capa y guardamos el leafletID en el array
-      $rootScope.map.addLayer($rootScope.labs);
-      $rootScope.capasMostradas[0] = $rootScope.labs;
-    }
-    else{
-      //Remove layer a partir de id
-      if($rootScope.capasMostradas[0])
-      $rootScope.map.removeLayer($rootScope.capasMostradas[0]);
-    }
-    if($scope.layers[1].enabled){
-      $rootScope.map.addLayer($rootScope.clases);
-      $rootScope.capasMostradas[1] = $rootScope.clases;
-    }
-    else{
-      if($rootScope.capasMostradas[1])
-      $rootScope.map.removeLayer($rootScope.capasMostradas[1]);
-    }
-    if($scope.layers[2].enabled){
-      $rootScope.map.addLayer($rootScope.wc);
-      $rootScope.capasMostradas[2] = $rootScope.wc;
-    }
-    else{
-      if($rootScope.capasMostradas[2])
-      $rootScope.map.removeLayer($rootScope.capasMostradas[2]);
-    }
-    if($scope.layers[3].enabled){
-      $rootScope.map.addLayer($rootScope.despachos);
-      $rootScope.capasMostradas[3] = $rootScope.despachos;
-    }
-    else{
-      if($rootScope.capasMostradas[3])
-      $rootScope.map.removeLayer($rootScope.capasMostradas[3]);
-    }
+  $scope.$on('app.markerClicked', function(e) {
+    //console.log('unauthorized user - ' + $rootScope.markerClicked);
+    //TODO: GET space con ID $rootScope.markerClicked
+    //$scope.space =;
+    $scope.modal.show();
+  });
+
+  function updateSpace(){
+    console.log($scope.space.luz);
+    //TODO: POST UPDATE space nuevo
+  }
+
+  $scope.testMarker = function() {
+    var markLab = L.marker($scope.space.latLng, {
+      icon: blackMarker,
+      id: $scope.space.id
+    });
+    markLab.addTo($rootScope.map).on('click', onClick);
+    $rootScope.map.removeLayer(markLab);
+    markLab.addTo($rootScope.map).on('click', onClick);
   };
+
+  $scope.space = {
+    temp: '-9',
+    luz: true,
+    latLng: [41.684100,-0.889223],
+    id: '-1'
+  };
+
 
 });

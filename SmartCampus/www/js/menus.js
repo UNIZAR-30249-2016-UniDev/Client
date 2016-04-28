@@ -101,6 +101,7 @@ angular.module('menus', ['ionic'])
     //Sustituimos el layers compartido de rootScope por el nuevo actualizado
     $rootScope.layers = $scope.layers;
     $scope.modal.hide();
+    cargarLayers();
   };
 
   //Cleanup the modal when we're done with it!

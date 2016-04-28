@@ -2,7 +2,9 @@
   <!-- Modal header bar -->
   <ion-header-bar class="bar-secondary">
     <h1 class="title">Información</h1>
-    <button class="button button-clear button-dark" ng-click="closeModal()">Atrás</button>
+    <button class="button button-icon"ng-click="closeModal()">
+      <i class="icon ion-close-round"></i>
+    </button>
   </ion-header-bar>
   <!-- Modal content area -->
   <ion-content>
@@ -11,7 +13,7 @@
       <div class="item item-button-right">
         Temperatura
         <div class="buttons">
-          {{space.temperature}}
+          {{space.temp}}
         </div>
       </div>
 
@@ -24,7 +26,7 @@
         </div>
       </div>
 
-      <ion-toggle toggle-class="toggle-dark" ng-model="space.lights" ng-checked="space.lights">Iluminación</ion-toggle>
+      <ion-toggle toggle-class="toggle-dark" ng-model="space.luz" ng-checked="space.luz">Iluminación</ion-toggle>
       <ion-toggle toggle-class="toggle-dark" ng-model="space.doors" ng-checked="space.doors">Puertas</ion-toggle>
       <ion-toggle toggle-class="toggle-dark" ng-model="space.windows" ng-checked="space.windows">Ventanas</ion-toggle>
       <ion-toggle toggle-class="toggle-dark" ng-model="space.presence" ng-checked="space.presence" ng-disabled="true">Presencia</ion-toggle>

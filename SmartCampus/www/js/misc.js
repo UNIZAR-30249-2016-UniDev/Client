@@ -27,7 +27,7 @@ angular.module('misc', ['ionic'])
         if (index != $rootScope.pisoActual){
           $rootScope.pisoActual = index;
           cambiarPiso();
-          $scope.cargarLayers();
+          cargarLayers();
         }
         console.log('BUTTON CLICKED', index,  'piso:' , $rootScope.pisoActual);
         return true;
