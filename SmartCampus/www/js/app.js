@@ -4,7 +4,8 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic', 'buttons', 'menus', 'misc', 'markers'])
-  .run(function($ionicPlatform, $rootScope) {
+
+  .run(function($ionicPlatform, $rootScope, $http, $timeout) {
     $ionicPlatform.ready(function() {
 
       //RootScope para compartir la informacion de las layers entre el modal y el controller
@@ -27,7 +28,6 @@ angular.module('starter', ['ionic', 'buttons', 'menus', 'misc', 'markers'])
         id : 3
       }];
 
-
       //Array para guardar los leafletID de las capas mostradas en el mapa
       $rootScope.capasMostradas = new Array();
 
@@ -39,7 +39,6 @@ angular.module('starter', ['ionic', 'buttons', 'menus', 'misc', 'markers'])
       $rootScope.markersWc = [];
       $rootScope.markersAulas = [];
       $rootScope.markersDespachos = [];
-      //TODO: llamar cargarMakers
 
       //Variable marker negra
       var blackMarker = L.icon({
@@ -49,42 +48,92 @@ angular.module('starter', ['ionic', 'buttons', 'menus', 'misc', 'markers'])
           popupAnchor:  [-10, -10] // point from which the popup should open relative to the iconAnchor
       });
 
-      //TODO: borrar  function prueba
-      prueba = function (){
-        console.log($rootScope.markersLabs.length);
-        var espacios = [{
-          temp: '17',
-          luz: true,
-          latLng: [41.683530,-0.889085],
-          id: '11111111'
-        },
-        {
-          temp: '22.5',
-          luz: true,
-          latLng: [41.683562,-0.888484],
-          id: '222222222'
-        }];
-        for (var i = 0; i < espacios.length; i++) {
-          $rootScope.markersLabs[i] = L.marker(espacios[i].latLng, {
-            icon: blackMarker,
-            id: espacios[i].id
-          });
-        }
-      };
-      prueba();
+      cargarMarkers = function (){
 
-      cargarMakers = function (){
-        //TODO: GET labs -> espacios
-/*      for (var i = 0; i < espacios.length; i++) {
-          $rootScope.markersLabs[i] = L.marker(espacios[i].latLng, {
-            icon: blackMarker,
-            id: espacios[i].id
-          });
-        }
-        }*/
-        //TODO: GET wc
-        //TODO: GET clases
-        //TODO: GET despachos
+        //TODO: test
+        var point = new L.Point(675854.0864458996, 4617052.61686015);
+        new L.Marker($rootScope.map.layerPointToLatLng(point), {icon: blackMarker, id: "00.040"}).addTo($rootScope.map).on('click', onClick);
+        //new L.Marker($rootScope.map.containerPointToLayerPoint(point), {icon: blackMarker, id: "00.040"}).addTo($rootScope.map).on('click', onClick);
+        //new L.Marker($rootScope.map.layerPointToContainerPoint(point), {icon: blackMarker, id: "00.040"}).addTo($rootScope.map).on('click', onClick);
+        new L.Marker($rootScope.map.containerPointToLatLng(point), {icon: blackMarker, id: "00.040"}).addTo($rootScope.map).on('click', onClick);
+
+        //TODO: test2
+        /*var source = new Proj4js.Proj('EPSG:3857');
+        var dest = new Proj4js.Proj('EPSG:4326');
+        var p = new Proj4js.Point(675854.0864458996, 4617052.61686015);
+        Proj4js.transform(source, dest, p);
+        new L.Marker([p.y, p.x], {icon: blackMarker}).addTo($rootScope.map);*/
+
+        // variable para guardar los markers mostrados
+        $rootScope.markersLabs = [];
+        $rootScope.markersWc = [];
+        $rootScope.markersAulas = [];
+        $rootScope.markersDespachos = [];
+
+        //GET labs -> espacios
+        $http.get('http://smartcampus-smartcampus.rhcloud.com/api/espacios?tipo=LAB&planta=' + $rootScope.pisoActual)
+        .success(function(data, status, headers, config) {
+          console.log("OK LABS");
+          console.log(data);
+          for (var i = 0; i < data.espacios.length; i++) {
+            $rootScope.markersLabs[i] = L.marker(data.espacios[i].geometry.coordinates, {
+              icon: blackMarker,
+              id: data.espacios[i].id
+            });
+          }
+        })
+        .error(function(error, status, headers, config) {
+          console.log("Error occured");
+        });
+
+        //GET wc
+        $http.get('http://smartcampus-smartcampus.rhcloud.com/api/espacios?tipo=WC&planta=' + $rootScope.pisoActual)
+        .success(function(data, status, headers, config) {
+          console.log("OK WC");
+          console.log(data);
+          for (var i = 0; i < data.espacios.length; i++) {
+            $rootScope.markersWc[i] = L.marker(data.espacios[i].geometry.coordinates, {
+              icon: blackMarker,
+              id: data.espacios[i].id
+            });
+          }
+        })
+        .error(function(error, status, headers, config) {
+          console.log("Error occured");
+        });
+
+        //GET clases
+        $http.get('http://smartcampus-smartcampus.rhcloud.com/api/espacios?tipo=AULA&planta=' + $rootScope.pisoActual)
+        .success(function(data, status, headers, config) {
+          console.log("OK AULA");
+          console.log(data);
+          for (var i = 0; i < data.espacios.length; i++) {
+            $rootScope.markersAulas[i] = L.marker(data.espacios[i].geometry.coordinates, {
+              icon: blackMarker,
+              id: data.espacios[i].id
+            });
+          }
+        })
+        .error(function(error, status, headers, config) {
+          console.log("Error occured");
+        });
+
+        //GET despachos
+        $http.get('http://smartcampus-smartcampus.rhcloud.com/api/espacios?tipo=DESPACHO&planta=' + $rootScope.pisoActual)
+        .success(function(data, status, headers, config) {
+          console.log("OK DESPACHO");
+          console.log(data);
+          for (var i = 0; i < data.espacios.length; i++) {
+            $rootScope.markersDespachos[i] = L.marker(data.espacios[i].geometry.coordinates, {
+              icon: blackMarker,
+              id: data.espacios[i].id
+            });
+          }
+        })
+        .error(function(error, status, headers, config) {
+          console.log("Error occured");
+        });
+
       };
 
       // Variable para guardar los espacios recibidos del server
@@ -108,11 +157,14 @@ angular.module('starter', ['ionic', 'buttons', 'menus', 'misc', 'markers'])
       var maxZoom = 22;
 
       cambiarPiso = function (){
+        limpiarMarkers();
+        cargarMarkers();
+        $timeout(2000);
         limpiarCapas();
         mostrarCapaBase();
         $rootScope.capasMostradas = new Array();
           //Variables para guardar capas
-          $rootScope.labs = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
+          $rootScope.labs = L.tileLayer.wms("http://geoserver-smartcampus.rhcloud.com/geoserver/wms", {
             layers: 'proyecto:planta_'+ $rootScope.pisoActual +'_lab',
             format: 'image/png',
             transparent: true,
@@ -120,7 +172,7 @@ angular.module('starter', ['ionic', 'buttons', 'menus', 'misc', 'markers'])
             minZoom:minZoom ,
             maxZoom:maxZoom
           });
-          $rootScope.clases = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
+          $rootScope.clases = L.tileLayer.wms("http://geoserver-smartcampus.rhcloud.com/geoserver/wms", {
             layers: 'proyecto:planta_'+ $rootScope.pisoActual +'_aula',
             format: 'image/png',
             transparent: true,
@@ -128,7 +180,7 @@ angular.module('starter', ['ionic', 'buttons', 'menus', 'misc', 'markers'])
             minZoom:minZoom ,
             maxZoom:maxZoom
           });
-          $rootScope.wc = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
+          $rootScope.wc = L.tileLayer.wms("http://geoserver-smartcampus.rhcloud.com/geoserver/wms", {
             layers: 'proyecto:planta_'+ $rootScope.pisoActual +'_wc',
             format: 'image/png',
             transparent: true,
@@ -136,7 +188,7 @@ angular.module('starter', ['ionic', 'buttons', 'menus', 'misc', 'markers'])
             minZoom:minZoom ,
             maxZoom:maxZoom
           });
-          $rootScope.despachos = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
+          $rootScope.despachos = L.tileLayer.wms("http://geoserver-smartcampus.rhcloud.com/geoserver/wms", {
             layers: 'proyecto:planta_'+ $rootScope.pisoActual +'_despacho',
             format: 'image/png',
             transparent: true,
@@ -145,6 +197,9 @@ angular.module('starter', ['ionic', 'buttons', 'menus', 'misc', 'markers'])
             maxZoom:maxZoom
           });
         console.log("Cambiar Piso");
+
+
+
       };
 
       //Metodo encargado de limpiar todas las capas mostradas en el mapa
@@ -163,8 +218,7 @@ angular.module('starter', ['ionic', 'buttons', 'menus', 'misc', 'markers'])
 
       //Método encargado de mostrar la capa base del piso en el que nos encontremos
       mostrarCapaBase = function (){
-        //proyecto:planta_calle_ada_test
-        $rootScope.base = L.tileLayer.wms("http://192.168.56.101:8080/geoserver/wms", {
+        $rootScope.base = L.tileLayer.wms("http://geoserver-smartcampus.rhcloud.com/geoserver/wms", {
           layers: 'proyecto:planta_'+ $rootScope.pisoActual +'_base',
           format: 'image/png',
           transparent: true,
@@ -182,56 +236,67 @@ angular.module('starter', ['ionic', 'buttons', 'menus', 'misc', 'markers'])
           //Agnadimos la capa y guardamos el leafletID en el array
           $rootScope.map.addLayer($rootScope.labs);
           $rootScope.capasMostradas[0] = $rootScope.labs;
-          //TODO:
           mostrarMarkers($rootScope.markersLabs);
         }
         else{
           //Remove layer a partir de id
           if($rootScope.capasMostradas[0]){
             $rootScope.map.removeLayer($rootScope.capasMostradas[0]);
-            //TODO:
             eliminarMarkers($rootScope.markersLabs);
           }
         }
         if($rootScope.layers[1].enabled){
           $rootScope.map.addLayer($rootScope.clases);
           $rootScope.capasMostradas[1] = $rootScope.clases;
+          mostrarMarkers($rootScope.markersAulas);
         }
         else{
-          if($rootScope.capasMostradas[1])
-          $rootScope.map.removeLayer($rootScope.capasMostradas[1]);
+          if($rootScope.capasMostradas[1]){
+            $rootScope.map.removeLayer($rootScope.capasMostradas[1]);
+            eliminarMarkers($rootScope.markersAulas);
+          }
         }
         if($rootScope.layers[2].enabled){
           $rootScope.map.addLayer($rootScope.wc);
           $rootScope.capasMostradas[2] = $rootScope.wc;
+          mostrarMarkers($rootScope.markersWc);
         }
         else{
-          if($rootScope.capasMostradas[2])
-          $rootScope.map.removeLayer($rootScope.capasMostradas[2]);
+          if($rootScope.capasMostradas[2]){
+            $rootScope.map.removeLayer($rootScope.capasMostradas[2]);
+            eliminarMarkers($rootScope.markersWc);
+          }
         }
         if($rootScope.layers[3].enabled){
           $rootScope.map.addLayer($rootScope.despachos);
           $rootScope.capasMostradas[3] = $rootScope.despachos;
+          mostrarMarkers($rootScope.markersDespachos);
         }
         else{
-          if($rootScope.capasMostradas[3])
-          $rootScope.map.removeLayer($rootScope.capasMostradas[3]);
-        }
-      };
-
-      //TODO: DESCOMENTAR ESTO
-      mostrarMarkers = function (listaMarkers){
-        console.log("Size" + listaMarkers.length);
-        // Recorremos los espacios obtenidos
-        for (var i = 0; i < listaMarkers.length; i++) {
-          if(listaMarkers[i]){
-            listaMarkers[i].addTo($rootScope.map).on('click', onClick);
-            console.log(listaMarkers[i].id);
+          if($rootScope.capasMostradas[3]){
+            $rootScope.map.removeLayer($rootScope.capasMostradas[3]);
+            eliminarMarkers($rootScope.markersDespachos);
           }
         }
       };
 
-      //TODO: DESCOMENTAR ESTO
+      limpiarMarkers = function (){
+        eliminarMarkers($rootScope.markersDespachos);
+        eliminarMarkers($rootScope.markersWc);
+        eliminarMarkers($rootScope.markersAulas);
+        eliminarMarkers($rootScope.markersLabs);
+      };
+
+      mostrarMarkers = function (listaMarkers){
+        console.log("Size of markers: " + listaMarkers.length);
+        // Recorremos los espacios obtenidos
+        for (var i = 0; i < listaMarkers.length; i++) {
+          if(listaMarkers[i]){
+            listaMarkers[i].addTo($rootScope.map).on('click', onClick);
+          }
+        }
+      };
+
       eliminarMarkers = function (listaMarkers){
         // Recorremos los espacios obtenidos
         for (var i = 0; i < listaMarkers.length; i++) {

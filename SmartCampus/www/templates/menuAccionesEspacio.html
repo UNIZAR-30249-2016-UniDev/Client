@@ -13,7 +13,7 @@
       <div class="item item-button-right">
         Temperatura
         <div class="buttons">
-          {{space.temp}}
+          {{space.temperatura}}
         </div>
       </div>
 
@@ -21,15 +21,15 @@
         Climatizador
         <div class="buttons">
           <button class="button small-button button-dark margin-right" ng-click="lessTemperature()">-</button>
-          {{space.goalTemperature}}
+          {{space.temperatura_objetivo}}
           <button class="button small-button button-dark margin-left" ng-click="moreTemperature()">+</button>
         </div>
       </div>
 
       <ion-toggle toggle-class="toggle-dark" ng-model="space.luz" ng-checked="space.luz">Iluminación</ion-toggle>
-      <ion-toggle toggle-class="toggle-dark" ng-model="space.doors" ng-checked="space.doors">Puertas</ion-toggle>
-      <ion-toggle toggle-class="toggle-dark" ng-model="space.windows" ng-checked="space.windows">Ventanas</ion-toggle>
-      <ion-toggle toggle-class="toggle-dark" ng-model="space.presence" ng-checked="space.presence" ng-disabled="true">Presencia</ion-toggle>
+      <ion-toggle toggle-class="toggle-dark" ng-model="space.puertas" ng-checked="space.puertas">Puertas</ion-toggle>
+      <!--<ion-toggle toggle-class="toggle-dark" ng-model="space.windows" ng-checked="space.windows">Ventanas</ion-toggle>-->
+      <ion-toggle toggle-class="toggle-dark" ng-model="space.presencia" ng-checked="space.presencia" ng-disabled="true">Presencia</ion-toggle>
     </div>
   </ion-content>
 </div>

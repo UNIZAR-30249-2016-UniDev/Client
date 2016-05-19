@@ -46,20 +46,6 @@ angular.module('menus', ['ionic'])
     $scope.modal = modal;
   });
 
-  //TODO
-  $scope.moreTemperature = function() {
-    var t = $scope.space.goalTemperature;
-    if (t + 1 <= 40) {
-      $scope.space.goalTemperature = t + 1;
-    }
-  };
-  //TODO
-  $scope.lessTemperature = function() {
-    var t = $scope.space.goalTemperature;
-    if (t - 1 >= 18) {
-      $scope.space.goalTemperature = t - 1;
-    }
-  };
 
   /* Open and close the modal */
   $scope.openModal = function() {

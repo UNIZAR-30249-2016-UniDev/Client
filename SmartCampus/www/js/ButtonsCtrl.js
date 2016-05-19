@@ -4,7 +4,7 @@ angular.module('buttons', ['ionic'])
 /**
 * Controlador Principal
 */
-.controller('ButtonsCtrl', function ($scope, $log, $rootScope, $ionicModal) {
+.controller('ButtonsCtrl', function ($scope, $log, $rootScope, $ionicModal, $http) {
 
   $ionicModal.fromTemplateUrl('templates/menuAccionesEspacio.html', {
     scope: $scope,
@@ -39,6 +39,9 @@ angular.module('buttons', ['ionic'])
   $scope.mostrarBotones = true;  // mostrar = false cuando se seleccione una opcion
   $scope.$log = $log; // variable para acceder al log
 
+  //Variable para guardar el espcio a mostrar en el modal
+  $scope.space = { "id":"00.040", "geometry": { "type": "Point", "coordinates": [675848.1544833337, 4616966.642828266] }, "luz":false, "puertas":false, "presencia":false, "temperatura":20.0, "temperatura_objetivo":22.0};
+
   /**
   * Metodo inicial
   */
@@ -66,31 +69,58 @@ angular.module('buttons', ['ionic'])
     osm.options.crs = L.CRS.EPSG23030;
     //Movemos la camara a las coordenadas del edificio pasado por parametro
     map.setView(new L.LatLng(x, y),$scope.minZoom );
+
     //Configuramos el mapa para que no se pueda mover fuera del bound
-    map.on('drag', function() {
+    /*map.on('drag', function() {
       map.panInsideBounds(box, { animate: false });
-    });
+    });*/
+
     //Anadimos el mapa en una layer
     //map.addLayer(osm);                //Este para OpenStreetMap
-    var ggl = new L.Google('ROADMAP', {minZoom: $scope.minZoom , maxZoom: $scope.maxZoom , bounds: box });  //Este para Google Maps
+    //var ggl = new L.Google('ROADMAP', {minZoom: $scope.minZoom , maxZoom: $scope.maxZoom , bounds: box });  //Este para Google Maps
+    var ggl = new L.Google('TERRAIN');  //Este para Google Maps
     map.addLayer(ggl);
     //Guardamos el mapa de forma global, para acceder a el desde toda la app
     $rootScope.map = map;
+
+    //anadimos leyenda
+    var legend = L.control({position: 'bottomleft'});
+    legend.onAdd = function (map) {
+      var div = L.DomUtil.create('div', 'info-legend');
+      div.innerHTML = '<img src="http://geoserver-smartcampus.rhcloud.com/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=30&HEIGHT=25&LAYER=proyecto:leyenda&&legend_options=fontName:Times%20New%20Roman;fontAntiAliasing:true" alt = "Dog Exercise Legend"></img>';
+      return div;
+    };
+    legend.addTo($rootScope.map);
+
   };
 
   $scope.$on('app.markerClicked', function(e) {
-    //console.log('unauthorized user - ' + $rootScope.markerClicked);
-    //TODO: GET space con ID $rootScope.markerClicked
-    //$scope.space =;
-    $scope.modal.show();
+    //GET space con ID
+    $http.get('http://smartcampus-smartcampus.rhcloud.com/api/identificacion?id=' + $rootScope.markerClicked)
+    .success(function(data, status, headers, config) {
+      console.log("OK ESPACIO MODAL");
+      console.log(data);
+      $scope.space = data;
+      $scope.modal.show();
+    })
+    .error(function(error, status, headers, config) {
+      console.log("Error occured");
+    });
   });
 
   function updateSpace(){
-    console.log($scope.space.luz);
-    //TODO: POST UPDATE space nuevo
+    //Actualizamos espacio
+    //http://smartcampus-smartcampus.rhcloud.com/actualizacion?id=00.400&luz=true&puertas=false&presencia=true&temperatura=19.0&temperatura_objetivo=22.0
+    $http.get('http://smartcampus-smartcampus.rhcloud.com/api/actualizacion?id='+$rootScope.markerClicked+'&luz='+$scope.space.luz+'&puertas='+$scope.space.puertas+'&temperatura_objetivo='+$scope.space.temperatura_objetivo)
+    .success(function(data, status, headers, config) {
+      console.log("OK ESPACIO ACTUALIZADO");
+    })
+    .error(function(error, status, headers, config) {
+      console.log("Error occured al actualizar espacio");
+    });
   }
 
-  $scope.testMarker = function() {
+  /*$scope.testMarker = function() {
     var markLab = L.marker($scope.space.latLng, {
       icon: blackMarker,
       id: $scope.space.id
@@ -98,14 +128,21 @@ angular.module('buttons', ['ionic'])
     markLab.addTo($rootScope.map).on('click', onClick);
     $rootScope.map.removeLayer(markLab);
     markLab.addTo($rootScope.map).on('click', onClick);
+  };*/
+
+
+  $scope.moreTemperature = function() {
+    var t = $scope.space.temperatura_objetivo;
+    if (t + 1 <= 40) {
+      $scope.space.temperatura_objetivo = t + 1;
+    }
   };
 
-  $scope.space = {
-    temp: '-9',
-    luz: true,
-    latLng: [41.684100,-0.889223],
-    id: '-1'
+  $scope.lessTemperature = function() {
+    var t = $scope.space.temperatura_objetivo;
+    if (t - 1 >= 18) {
+      $scope.space.temperatura_objetivo = t - 1;
+    }
   };
-
 
 });

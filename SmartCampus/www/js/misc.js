@@ -3,7 +3,7 @@ angular.module('misc', ['ionic'])
 /**
  *   Controlador del FAB
  */
-.controller('FabCtrl', function($scope, $ionicActionSheet, $rootScope) {
+.controller('FabCtrl', function($scope, $ionicActionSheet, $rootScope, $timeout) {
 
   $scope.showActionsheet = function() {
     $ionicActionSheet.show({
@@ -27,7 +27,10 @@ angular.module('misc', ['ionic'])
         if (index != $rootScope.pisoActual){
           $rootScope.pisoActual = index;
           cambiarPiso();
-          cargarLayers();
+          $timeout(function(){
+            cargarLayers();
+          }, 2000);
+
         }
         console.log('BUTTON CLICKED', index,  'piso:' , $rootScope.pisoActual);
         return true;
