@@ -26,6 +26,7 @@ angular.module('misc', ['ionic'])
       buttonClicked: function(index) {
         if (index != $rootScope.pisoActual){
           $rootScope.pisoActual = index;
+          eliminarMarkers($rootScope.markersTotal);
           cambiarPiso();
           $timeout(function(){
             cargarLayers();

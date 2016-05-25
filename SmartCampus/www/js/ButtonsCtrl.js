@@ -66,19 +66,18 @@ angular.module('buttons', ['ionic'])
     //Creamos la Capa con los atributos
     var osm = new L.TileLayer(osmUrl, {minZoom: $scope.minZoom , maxZoom: $scope.maxZoom , attribution: osmAttrib, bounds: box });
     //Proyeccion EPSG23030
-    osm.options.crs = L.CRS.EPSG23030;
+    //osm.options.crs = L.CRS.EPSG23030;
     //Movemos la camara a las coordenadas del edificio pasado por parametro
     map.setView(new L.LatLng(x, y),$scope.minZoom );
 
     //Configuramos el mapa para que no se pueda mover fuera del bound
-    /*map.on('drag', function() {
+    map.on('drag', function() {
       map.panInsideBounds(box, { animate: false });
-    });*/
+    });
 
     //Anadimos el mapa en una layer
     //map.addLayer(osm);                //Este para OpenStreetMap
-    //var ggl = new L.Google('ROADMAP', {minZoom: $scope.minZoom , maxZoom: $scope.maxZoom , bounds: box });  //Este para Google Maps
-    var ggl = new L.Google('TERRAIN');  //Este para Google Maps
+    var ggl = new L.Google('ROADMAP', {minZoom: $scope.minZoom , maxZoom: $scope.maxZoom , bounds: box });  //Este para Google Maps
     map.addLayer(ggl);
     //Guardamos el mapa de forma global, para acceder a el desde toda la app
     $rootScope.map = map;
@@ -110,7 +109,6 @@ angular.module('buttons', ['ionic'])
 
   function updateSpace(){
     //Actualizamos espacio
-    //http://smartcampus-smartcampus.rhcloud.com/actualizacion?id=00.400&luz=true&puertas=false&presencia=true&temperatura=19.0&temperatura_objetivo=22.0
     $http.get('http://smartcampus-smartcampus.rhcloud.com/api/actualizacion?id='+$rootScope.markerClicked+'&luz='+$scope.space.luz+'&puertas='+$scope.space.puertas+'&temperatura_objetivo='+$scope.space.temperatura_objetivo)
     .success(function(data, status, headers, config) {
       console.log("OK ESPACIO ACTUALIZADO");
@@ -119,17 +117,6 @@ angular.module('buttons', ['ionic'])
       console.log("Error occured al actualizar espacio");
     });
   }
-
-  /*$scope.testMarker = function() {
-    var markLab = L.marker($scope.space.latLng, {
-      icon: blackMarker,
-      id: $scope.space.id
-    });
-    markLab.addTo($rootScope.map).on('click', onClick);
-    $rootScope.map.removeLayer(markLab);
-    markLab.addTo($rootScope.map).on('click', onClick);
-  };*/
-
 
   $scope.moreTemperature = function() {
     var t = $scope.space.temperatura_objetivo;
