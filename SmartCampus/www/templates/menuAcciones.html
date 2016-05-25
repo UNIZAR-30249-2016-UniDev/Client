@@ -12,7 +12,22 @@
   <!-- Modal content area -->
   <ion-content>
     <div class="padding">
-      <button type="submit" class="button button-block button-dark">Apagar Todo</button>
+      <button type="submit" class="button button-block button-dark" ng-click="accionGeneral('abrir',1)">Abrir Ada Byron</button>
+    </div>
+    <div class="padding">
+      <button type="submit" class="button button-block button-dark" ng-click="accionGeneral('cerrar',1)">Cerrar Ada Byron</button>
+    </div>
+    <div class="padding">
+      <button type="submit" class="button button-block button-dark" ng-click="accionGeneral('abrir',2)">Abrir Torres Quevedo</button>
+    </div>
+    <div class="padding">
+      <button type="submit" class="button button-block button-dark" ng-click="accionGenral('cerrar',2)">Cerrar Torres Quevedo</button>
+    </div>
+    <div class="padding">
+      <button type="submit" class="button button-block button-dark" ng-click="accionGeneral('abrir',3)">Abrir Betancourt</button>
+    </div>
+    <div class="padding">
+      <button type="submit" class="button button-block button-dark" ng-click="accionGenral('cerrar',3)">Cerrar Betancourt</button>
     </div>
   </ion-content>
 </div>

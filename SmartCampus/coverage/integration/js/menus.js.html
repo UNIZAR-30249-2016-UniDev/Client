@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">62.16% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>21/42</span>
+        <span class='fraction'>23/37</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/4</span>
+        <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">43.48% </span>
+        <span class="strong">45.45% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>10/23</span>
+        <span class='fraction'>10/22</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">62.16% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>21/42</span>
+        <span class='fraction'>23/37</span>
       </div>
     </div>
   </div>
@@ -159,9 +159,7 @@
 114
 115
 116
-117
-118
-119</td><td class="line-coverage quiet"><span class="cline-any cline-yes">9×</span>
+117</td><td class="line-coverage quiet"><span class="cline-any cline-yes">9×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9×</span>
@@ -178,6 +176,17 @@
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9×</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -206,20 +215,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -262,6 +257,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -281,7 +277,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">angular.module('menus', ['ionic'])
 &nbsp;
-.controller('MenuAccionesCtrl', function($scope, $ionicModal) {
+.controller('MenuAccionesCtrl', function($scope, $ionicModal, $http) {
   $ionicModal.fromTemplateUrl('templates/menuAcciones.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -294,6 +290,17 @@
   };
   $scope.closeModal = function() {
     $scope.modal.hide();
+  };
+&nbsp;
+  $scope.accionGeneral = <span class="fstat-no" title="function not covered" >function(accion,edificio){</span>
+<span class="cstat-no" title="statement not covered" >    console.log("accion");</span>
+/*    $http.get('http://smartcampus-smartcampus.rhcloud.com/api/'+accion+'?edificio=' + edificio + '&amp;planta=1')
+    .success(function(data, status, headers, config) {
+      console.log("OK ACCION");
+    })
+    .error(function(error, status, headers, config) {
+      console.log("Error occured Accion");
+    });*/
   };
 &nbsp;
   //Cleanup the modal when we're done with it!
@@ -327,20 +334,6 @@
 <span class="cstat-no" title="statement not covered" >    $scope.modal = modal;</span>
   });
 &nbsp;
-  //TODO
-<span class="cstat-no" title="statement not covered" >  $scope.moreTemperature = <span class="fstat-no" title="function not covered" >function() {</span></span>
-<span class="cstat-no" title="statement not covered" >    var t = $scope.space.goalTemperature;</span>
-<span class="cstat-no" title="statement not covered" >    if (t + 1 &lt;= 40) {</span>
-<span class="cstat-no" title="statement not covered" >      $scope.space.goalTemperature = t + 1;</span>
-    }
-  };
-  //TODO
-<span class="cstat-no" title="statement not covered" >  $scope.lessTemperature = <span class="fstat-no" title="function not covered" >function() {</span></span>
-<span class="cstat-no" title="statement not covered" >    var t = $scope.space.goalTemperature;</span>
-<span class="cstat-no" title="statement not covered" >    if (t - 1 &gt;= 18) {</span>
-<span class="cstat-no" title="statement not covered" >      $scope.space.goalTemperature = t - 1;</span>
-    }
-  };
 &nbsp;
   /* Open and close the modal */
 <span class="cstat-no" title="statement not covered" >  $scope.openModal = <span class="fstat-no" title="function not covered" >function() {</span></span>
@@ -382,6 +375,7 @@
     //Sustituimos el layers compartido de rootScope por el nuevo actualizado
     $rootScope.layers = $scope.layers;
     $scope.modal.hide();
+    cargarLayers();
   };
 &nbsp;
   //Cleanup the modal when we're done with it!
@@ -403,7 +397,7 @@
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Mar 31 2016 16:34:18 GMT+0200 (CEST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed May 25 2016 23:25:53 GMT+0200 (CEST)
 </div>
 </div>
 <script src="../prettify.js"></script>

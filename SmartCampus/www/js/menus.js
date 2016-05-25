@@ -1,6 +1,6 @@
 angular.module('menus', ['ionic'])
 
-.controller('MenuAccionesCtrl', function($scope, $ionicModal) {
+.controller('MenuAccionesCtrl', function($scope, $ionicModal, $http) {
   $ionicModal.fromTemplateUrl('templates/menuAcciones.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -13,6 +13,17 @@ angular.module('menus', ['ionic'])
   };
   $scope.closeModal = function() {
     $scope.modal.hide();
+  };
+
+  $scope.accionGeneral = function(accion,edificio){
+    console.log("accion");
+/*    $http.get('http://smartcampus-smartcampus.rhcloud.com/api/'+accion+'?edificio=' + edificio + '&planta=1')
+    .success(function(data, status, headers, config) {
+      console.log("OK ACCION");
+    })
+    .error(function(error, status, headers, config) {
+      console.log("Error occured Accion");
+    });*/
   };
 
   //Cleanup the modal when we're done with it!
